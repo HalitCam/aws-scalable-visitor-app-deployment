@@ -1,28 +1,28 @@
 <?php 
-$servername = "://amazonaws.com";
+$servername = "php-mysql-database-instance.ccdk0q246eof.us-east-1.rds.amazonaws.com";
 $username = "projemaster";
 $password = "master1234";
 $dbname = "proje";
 
-// PHP 8 Uyumlu Nesne Yönelimli Bağlantı
+// PHP 8 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Bağlantı kontrolü
+// Check Connection
 if ($conn->connect_error) {
     die("Veritabanı bağlantısı başarısız: " . $conn->connect_error);
 }
 
 $sql    = 'SELECT * FROM visitors';
-// PHP 8 Uyumlu Nesne Yönelimli Sorgu Çalıştırma
+// query
 $query  = $conn->query($sql);
 
 if ($query) {
-    // PHP 8 Uyumlu fetch_assoc kullanımı
+    // PHP 8 - fetch_assoc usage
     while ($info = $query->fetch_assoc()) { 
-        // AWS S3 üzerindeki gerçek resim URL formatı (Konsol linki değil, doğrudan erişim linki)
-        $s3_url = "https://amazonaws.com" . $info['photo'];
+
+        $s3_url = "https://s3-eu-west-1.amazonaws.com/phpprojeimage-resized/resized-images/" . $info['photo'];
         
-        // HTML XSS güvenliği için htmlspecialchars eklendi
+        // for HTML XSS security htmlspecialchars added
         echo "<img src='" . htmlspecialchars($s3_url) . "' width='150' alt='Ziyaretçi Fotoğrafı'> <br>"; 
         echo "<b>Foto:</b> " . htmlspecialchars($info['photo']) . "<br> ";
         echo "<b>Name:</b> " . htmlspecialchars($info['name']) . "<br> "; 
@@ -35,3 +35,4 @@ if ($query) {
 
 $conn->close();
 ?>
+

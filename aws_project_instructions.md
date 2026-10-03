@@ -10,9 +10,9 @@
 
 We will create two S3 buckets to store the images uploaded by our application. The first bucket will store the images, while the second bucket will store the resized copies of the images created by our Lambda function.
 
-**2:** Go to the S3 service and create a bucket named `projeisminiz`. Also create a folder named `images` inside it.
+**2:** Go to the S3 service and create a bucket named `myproject`. Also create a folder named `images` inside it.
 
-**3:** Go to the S3 service and create another bucket named `projeisminiz-resized` — meaning that the name of the S3 bucket you created previously is followed by a hyphen `-` and then `resized`. **This naming is important.**
+**3:** Go to the S3 service and create another bucket named `myproject-resized` — meaning that the name of the S3 bucket you created previously is followed by a hyphen `-` and then `resized`. **This naming is important.**
 
 When creating the bucket, in Step 2, **Configure options**, remove all four check marks under the following options:
 
@@ -68,16 +68,16 @@ Under **Code Entry Type**, select **Upload a zip file**, choose the `ImageResize
 
 Then, under **Trigger**, select **S3**.
 
-* Bucket: `projeisminiz`
+* Bucket: `myproject`
 * Event: **All Object Create Events**
 
 Save everything.
 
 Finally, under **Basic Settings**, set the timeout value to **10 seconds** and save.
 
-**6:** Upload a `.jpg` file to the `projeisminiz` bucket.
+**6:** Upload a `.jpg` file to the `myproject` bucket.
 
-Then check whether a smaller version of the image has been created in the `projeisminiz-resized` bucket.
+Then check whether a smaller version of the image has been created in the `myproject-resized` bucket.
 
 If it has, you have successfully created the Lambda function.
 
@@ -390,7 +390,7 @@ Replace the value of this variable with the address of your own RDS database and
 Additionally, replace:
 
 ```php
-Echo "<img src=https://s3-eu-west-1.amazonaws.com/projeisminiz-resized/resized-images/"
+Echo "<img src=https://s3-eu-west-1.amazonaws.com/myproject-resized/resized-images/"
 ```
 
 with the address of your own S3 bucket.
@@ -461,7 +461,7 @@ Modify the following content as necessary, paste it into the file, and save it:
 
 ```bash
 #!/bin/bash
-aws s3 sync /var/www/html/images s3://projeisminiz/images
+aws s3 sync /var/www/html/images s3://myproject/images
 ```
 
 ---

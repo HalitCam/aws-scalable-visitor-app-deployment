@@ -9,48 +9,21 @@ The underlying infrastructure leverages **Serverless processing** (AWS Lambda) f
 
 ## 📐 Architecture Diagram & Workflow
 
-```
-                        [ User / Client ]
-                                |
-                                v
-                           [ Route 53 ]
-                                |
-                                v
-                     [ CloudFront CDN ]
-                                |
-                                v
-               [ Application Load Balancer (ALB) ]
-                                |
-             +------------------+------------------+
-             |                 |                   |
-             v                 v                   v
-      [ EC2 Instance ]  [ EC2 Instance ]   [ EC2 Instance ] (Auto Scaling Group)
-             |                 |                   |
-             +--------+--------+-------------------+
-                      |
-        +-------------+-------------+--------------------+
-        |                           |                    |
-        v                           v                    v
-  [ AWS EFS ]              [ AWS RDS (MySQL) ]   [ S3 Source Bucket ]
-  (Shared /var/www/html)   (Multi-AZ DB)                 |
-                                                         v (Object Created)
-                                                 [ AWS Lambda ]
-                                                 (Resizes to 100x100)
-                                                         |
-                                                         v
-                                              [ S3 Resized Bucket ]
-```
+![Deployment-Architecture](./aws-solution-architecture.png)
 
----
+## Outcome of Deployment
+
+![Outcome of Application](./app_outcome.png)
+
 
 ## 🛠 AWS Services & Technologies Used
 
-* **Compute:** AWS EC2 (Amazon Linux 2), Auto Scaling Group (ASG), AWS Lambda (Node.js)
+* **Compute:** AWS EC2 (Amazon Linux 3), Auto Scaling Group (ASG), AWS Lambda (Node.js)
 * **Networking & Content Delivery:** VPC, Public Subnets, Security Groups, Application Load Balancer (ALB), CloudFront CDN, Route 53
 * **Storage:** Amazon S3, Amazon EFS (Elastic File System)
 * **Database:** Amazon RDS (MySQL, Multi-AZ / Read Replica configuration)
 * **Security & IAM:** AWS IAM Roles (`Lambda-S3`, `Ec2-S3`)
-* **Application Stack:** PHP 7.2, Apache (`httpd`), MySQL Client, Shell Scripting, Cron
+* **Application Stack:** PHP 8.3, Apache (`httpd`), MySQL Client, Shell Scripting, Cron
 
 ---
 
@@ -62,7 +35,7 @@ The underlying infrastructure leverages **Serverless processing** (AWS Lambda) f
 
 ### 2. Base Compute Template & PHP Stack
 * Provisioned a baseline **EC2 T2.Micro** instance attached to the `Ec2-S3` IAM role and `Proje-SecGroup` security group.
-* Installed Apache (`httpd`), MySQL client, and PHP 7.2.
+* Installed Apache (`httpd`), MySQL client, and PHP 8.3.
 * Verified PHP execution via `phpinfo()`.
 
 ### 3. Shared File System (EFS) Integration
